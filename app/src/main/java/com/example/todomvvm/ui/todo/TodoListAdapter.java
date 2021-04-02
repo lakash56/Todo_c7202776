@@ -1,14 +1,17 @@
 package com.example.todomvvm.ui.todo;
 
+import android.content.Context;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.content.ContextCompat;
 import androidx.fragment.app.FragmentTransaction;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -23,6 +26,9 @@ public class TodoListAdapter extends RecyclerView.Adapter<TodoListAdapter.TodoVi
         private final TextView todoItemView;
         private TextView description;
         private TextView date;
+        //private TextView priorityTextView;
+        private Button btn;
+        //private Context mContext;
 
 
         private TodoViewHolder(View itemView) {
@@ -30,6 +36,9 @@ public class TodoListAdapter extends RecyclerView.Adapter<TodoListAdapter.TodoVi
             todoItemView = itemView.findViewById(R.id.textView);
             description = itemView.findViewById(R.id.description);
             date = itemView.findViewById(R.id.date);
+            btn = itemView.findViewById(R.id.view_task);
+            //priorityTextView = itemView.findViewById(R.id.priorityTextView);
+
         }
 
 
@@ -55,8 +64,27 @@ public class TodoListAdapter extends RecyclerView.Adapter<TodoListAdapter.TodoVi
         if (mTodos != null) {
             final Todo current = mTodos.get(position);
             holder.todoItemView.setText(current.getTitle());
-            holder.description.setText(current.getDetail());
+            //holder.description.setText(current.getDetail());
             holder.date.setText(current.getDate());
+            //int priority = current.getPriority();
+           // String priorityString = "" + priority;
+           // holder.priorityTextView.setText(priorityString);
+            holder.btn.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    AppCompatActivity activity = (AppCompatActivity) view.getContext();
+                    FragmentTransaction fragmentTransaction = activity.getSupportFragmentManager().beginTransaction();
+                    ViewFragment  viewFragment = new ViewFragment();
+                    Bundle args = new Bundle();
+                    args.putString("task_title", current.getTitle());
+                    args.putString("task_description", current.getDetail());
+                    args.putString("created_at" , current.getDate());
+                    args.putInt("task_id" , current.getId());
+                    viewFragment.setArguments(args);
+                    fragmentTransaction.replace(R.id.container, viewFragment).addToBackStack(null);
+                    fragmentTransaction.commit();
+                }
+            });
 
             holder.todoItemView.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -70,7 +98,7 @@ public class TodoListAdapter extends RecyclerView.Adapter<TodoListAdapter.TodoVi
                     args.putString("created_at" , current.getDate());
                     args.putInt("task_id" , current.getId());
                     updateFragment.setArguments(args);
-                    fragmentTransaction.replace(R.id.container, updateFragment);
+                    fragmentTransaction.replace(R.id.container, updateFragment).addToBackStack(null);
                     fragmentTransaction.commit();
                    // activity.getSupportFragmentManager().beginTransaction().replace(R.id.container,updateFragment).addToBackStack(null).commit();
                 }
@@ -86,6 +114,8 @@ public class TodoListAdapter extends RecyclerView.Adapter<TodoListAdapter.TodoVi
     /*public interface onTaskListner{
         void onUpdate(int position);
     }*/
+
+
 
 
     public List<Todo> getTasks() {

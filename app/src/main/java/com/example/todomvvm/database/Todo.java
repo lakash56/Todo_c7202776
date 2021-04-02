@@ -27,6 +27,7 @@ public class Todo {
     private String mTitle;
     private String mDetail;
     private String mDate;
+    //private  int priority;
 
 
     
@@ -34,6 +35,7 @@ public class Todo {
         this.mTitle = title;
         this.mDetail = detail;
         this.mDate = date;
+        //this.priority = priority;
     }
     @Ignore
     public Todo(int id, String title, String detail){
@@ -55,6 +57,9 @@ public class Todo {
 
     public String getDate() {return this.mDate;}
     public void setDate(String mDate){this.mDate = mDate;}
+
+ /*   public int getPriority() {return  this.priority;}
+    public void setPriority(int priority){this.priority = priority;}*/
 
     public int getId() {
         return id;

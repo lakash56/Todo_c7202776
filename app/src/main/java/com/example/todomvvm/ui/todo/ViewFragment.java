@@ -33,9 +33,19 @@ TextView viewTitle,viewDescription,viewDate;
 
         view = inflater.inflate(R.layout.fragment_view, container, false);
 
+        Bundle bundle = getArguments();
+        String title = bundle.getString("task_title");
+        String description = bundle.getString("task_description");
+        String date = bundle.getString("crated_at");
+        final int taskId = bundle.getInt("task_id");
+
         viewTitle = view.findViewById(R.id.singleView);
         viewDescription = view.findViewById(R.id.singleViewDescription);
         viewDate = view.findViewById(R.id.date_view);
+
+        viewTitle.setText(title);
+        viewDescription.setText(description);
+        viewDate.setText(date);
 
 
         return view;
